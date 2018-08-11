@@ -1,48 +1,26 @@
 ﻿using FlareHR.Battleship.ConsoleApp.Enums;
+using FlareHR.Battleship.ConsoleApp.Helpers;
 using FlareHR.Battleship.ConsoleApp.Models;
+using FlareHR.Battleship.ConsoleApp.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace FlareHR.Battleship.ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+
+        public static void StartGame(Player playerOne, Player playerTwo, GameConfiguration gameConfiguration)
         {
-            int matrixDimension = 10;
-            int columnNumberSelected;
-            int lineNumberSelected;
-
-            var playerOne = new Player
-            {
-                Board = new  BoardEnum.PositionState[matrixDimension, matrixDimension],
-                Number = PlayerEnum.Number.One,
-                NumberOfShipsLeft = matrixDimension / 2,
-                Color = ConsoleColor.Green
-            };
-
-            var playerTwo = new Player
-            {
-                Board = new BoardEnum.PositionState[matrixDimension, matrixDimension],
-                Number = PlayerEnum.Number.Two,
-                NumberOfShipsLeft = matrixDimension / 2,
-                Color = ConsoleColor.Red
-            };
-
-            Player currentPlayer = playerOne;// Player One first
-
-
-            // Spread the ships around the matrix
-            Random rnd = new Random();
-            for (int i = 0; i < matrixDimension - 1; i++)
-            {
-                playerOne.Board[rnd.Next(matrixDimension), rnd.Next(matrixDimension)] = BoardEnum.PositionState.Floating;
-                playerTwo.Board[rnd.Next(matrixDimension), rnd.Next(matrixDimension)] = BoardEnum.PositionState.Floating;
-            }
-
+            // Player One first     
+            Player currentPlayer = playerOne;
 
             // Keep asking the matrix until it reaches the maximum number of tries or all ships are found.
             do
             {
+                int columnNumberSelected = 0;
+                int lineNumberSelected = 0;
+
                 // Change color depends on which player is playing 
                 Console.ForegroundColor = currentPlayer.Color;
 
@@ -56,26 +34,29 @@ namespace FlareHR.Battleship.ConsoleApp
                     // Valid entry when staring 
                     validEntries = true;
 
-                    Console.WriteLine("Inform column position number (maximum {0}):", matrixDimension);
-                    columnNumberSelected = int.Parse(Console.ReadLine());
-
-                    Console.WriteLine("Inform line position number (maximum {0}):", matrixDimension);
-                    lineNumberSelected = int.Parse(Console.ReadLine());
-
-                    // Validate number entry
-                    if (columnNumberSelected > matrixDimension || lineNumberSelected > matrixDimension)
+                    // Column position Input
+                    Console.WriteLine("Inform column position number (minimum 1 and maximum {0}):", gameConfiguration.Columns);
+                    validEntries = Validator.ValidateInput(Console.ReadLine(), out columnNumberSelected);
+                    if (!validEntries || columnNumberSelected > gameConfiguration.Columns)
                     {
-                        validEntries = false;
-                        Console.WriteLine("Invalid entry, maximum {0}:", matrixDimension);
+                        Console.WriteLine("Invalid entry, minimum 1 maximum {0}:", gameConfiguration.Columns);
+                        continue;
                     }
-                    else
-                    {
-                        // Set current board
-                        currentSelectionBoardState = currentPlayer.Board[columnNumberSelected, lineNumberSelected];
 
-                        if (currentSelectionBoardState == BoardEnum.PositionState.Attacked || currentSelectionBoardState == BoardEnum.PositionState.Sunk)
-                            Console.WriteLine("------Position already attacked------");
+                    // Line position Input
+                    Console.WriteLine("Inform line position number (minimum 1 and maximum {0}):", gameConfiguration.Columns);
+                    validEntries = Validator.ValidateInput(Console.ReadLine(), out lineNumberSelected);
+                    if (!validEntries || lineNumberSelected > gameConfiguration.Lines)
+                    {
+                        Console.WriteLine("Invalid entry, minimum 1 and maximum {0}:", gameConfiguration.Lines);
+                        continue;
                     }
+
+                    // Set current board
+                    currentSelectionBoardState = currentPlayer.Board[columnNumberSelected - 1, lineNumberSelected - 1];
+
+                    if (currentSelectionBoardState == BoardEnum.PositionState.Attacked || currentSelectionBoardState == BoardEnum.PositionState.Sunk)
+                        Console.WriteLine("------Position already attacked------");
 
                 } while (currentSelectionBoardState == BoardEnum.PositionState.Attacked || currentSelectionBoardState == BoardEnum.PositionState.Sunk || !validEntries);
 
@@ -99,7 +80,7 @@ namespace FlareHR.Battleship.ConsoleApp
                 }
 
                 // Set last state of the board
-                currentPlayer.Board[columnNumberSelected, lineNumberSelected] = currentSelectionBoardState;
+                currentPlayer.Board[columnNumberSelected - 1, lineNumberSelected - 1] = currentSelectionBoardState;
 
                 // Set who is the next player
                 currentPlayer = currentPlayer.Number == PlayerEnum.Number.One ? playerTwo : playerOne;
@@ -113,7 +94,43 @@ namespace FlareHR.Battleship.ConsoleApp
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("----------------------------------Well done Player {0}!---------------------------------\n\n", currentPlayer.Number);
             Console.Read();
+        }
 
+        static void Main(string[] args)
+        {
+            // DI for .net console apps
+            var services = new ServiceCollection();
+            services.AddTransient<PlayerService>();
+            services.AddTransient<GameService>();
+            var provider = services.BuildServiceProvider();
+
+            // Ensure dispose call
+            using (var playerService = provider.GetService<PlayerService>())
+            {
+                // Create game configuration
+                var gameConfiguration = new GameConfiguration { Columns = 10, Lines = 10, NumberOfShips = 5 };
+
+                // Create Player One
+                var playerOne = new Player
+                {
+                    Board = playerService.SetBoard(gameConfiguration),
+                    Number = PlayerEnum.Number.One,
+                    NumberOfShipsLeft = gameConfiguration.NumberOfShips,
+                    Color = ConsoleColor.Green
+                };
+
+                // Create layer Two
+                var playerTwo = new Player
+                {
+                    Board = playerService.SetBoard(gameConfiguration),
+                    Number = PlayerEnum.Number.Two,
+                    NumberOfShipsLeft = gameConfiguration.NumberOfShips,
+                    Color = ConsoleColor.Red
+                };
+
+                // Start the game
+                StartGame(playerOne, playerTwo, gameConfiguration);
+            }
         }
     }
 }
