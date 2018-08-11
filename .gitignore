@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/FlareHR.Battleship/.vs/FlareHR.Battleship/v15/Server/sqlite3
+/.vs/slnx.sqlite
+/FlareHR.Battleship/FlareHR.Battleship.Console/bin/Debug/netcoreapp2.1
+/FlareHR.Battleship/FlareHR.Battleship.Console/obj
+/FlareHR.Battleship/.vs/FlareHR.Battleship/DesignTimeBuild/.dtbcache
+/FlareHR.Battleship/.vs/FlareHR.Battleship/v15/.suo
