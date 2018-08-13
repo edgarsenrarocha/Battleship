@@ -7,10 +7,6 @@ namespace FlareHR.Battleship.ConsoleApp.Services
 {
     public class GameService : IGameService, IDisposable
     {
-        public void StartGame(Player playerOne, Player playerTwo, GameConfiguration configuration)
-        {
-
-        }
         public void Dispose()
         {
         }

@@ -10,10 +10,20 @@ namespace FlareHR.Battleship.ConsoleApp.Services
         {
             var board = new BoardEnum.PositionState[gameConfiguration.Columns, gameConfiguration.Lines];
 
-            Random rnd = new Random();
-            for (int i = 0; i < gameConfiguration.Columns - 1; i++)
+            Random randon = new Random();
+            for (int i = 0; i < gameConfiguration.NumberOfShips; i++)
             {
-                board[rnd.Next(gameConfiguration.Columns), rnd.Next(gameConfiguration.Lines)] = BoardEnum.PositionState.Floating;
+                int columnNum;
+                int lineNum;
+
+                do
+                {
+                    columnNum = randon.Next(gameConfiguration.Columns);
+                    lineNum = randon.Next(gameConfiguration.Lines);
+
+                } while (board[columnNum, lineNum] == BoardEnum.PositionState.Floating);
+
+                board[columnNum, lineNum] = BoardEnum.PositionState.Floating;
             }
 
             return board;
