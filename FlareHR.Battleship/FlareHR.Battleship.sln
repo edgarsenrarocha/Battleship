@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlareHR.Battleship.ConsoleApp", "FlareHR.Battleship.Console\FlareHR.Battleship.ConsoleApp.csproj", "{57A0612E-C5CD-488A-BF86-9A9B80973BDB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlareHR.Battleship.Services", "FlareHR.Battleship.Services\FlareHR.Battleship.Services.csproj", "{21FF85B6-5048-4BF9-9F7B-B705CB2F7922}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlareHR.Battleship.Tests", "FlareHR.Battleship.Test\FlareHR.Battleship.Tests.csproj", "{42423D2B-FCD7-4CCF-803D-8C7BDD7A66E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlareHR.Battleship.Entities", "FlareHR.Battleship.Entities\FlareHR.Battleship.Entities.csproj", "{0BDB2B72-BBAB-4FA7-8FBE-7C945F47B920}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{57A0612E-C5CD-488A-BF86-9A9B80973BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A0612E-C5CD-488A-BF86-9A9B80973BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A0612E-C5CD-488A-BF86-9A9B80973BDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21FF85B6-5048-4BF9-9F7B-B705CB2F7922}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21FF85B6-5048-4BF9-9F7B-B705CB2F7922}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21FF85B6-5048-4BF9-9F7B-B705CB2F7922}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21FF85B6-5048-4BF9-9F7B-B705CB2F7922}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42423D2B-FCD7-4CCF-803D-8C7BDD7A66E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42423D2B-FCD7-4CCF-803D-8C7BDD7A66E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42423D2B-FCD7-4CCF-803D-8C7BDD7A66E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42423D2B-FCD7-4CCF-803D-8C7BDD7A66E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BDB2B72-BBAB-4FA7-8FBE-7C945F47B920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BDB2B72-BBAB-4FA7-8FBE-7C945F47B920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BDB2B72-BBAB-4FA7-8FBE-7C945F47B920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BDB2B72-BBAB-4FA7-8FBE-7C945F47B920}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
